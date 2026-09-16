@@ -1,42 +1,72 @@
 [
   {
-    "id": "s1",
-    "title": "Nightcall",
-    "artist": "Kavinsky",
-    "note": "That vocoder hook is the whole reason synthwave still works on me.",
-    "url": "https://music.apple.com/us/search?term=Nightcall%20Kavinsky",
-    "artUrl": null,
-    "addedAt": 1758000000000,
-    "sample": true
+    "id": "trk-mu4jxh71um571",
+    "title": "Illusions",
+    "artist": "Brunello",
+    "url": "https://music.apple.com/us/album/illusions/1845452928?i=1845452929&uo=4",
+    "note": "",
+    "artUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/0c/2a/d5/0c2ad5b4-713e-27ae-111b-8a5a6e57060f/663918586112.jpg/600x600bb.jpg",
+    "addedAt": 1789590419533,
+    "sample": false
   },
   {
-    "id": "s2",
-    "title": "Redbone",
-    "artist": "Childish Gambino",
-    "note": "The bassline sneaks up on you and then you're stuck for the day.",
-    "url": "https://music.apple.com/us/search?term=Redbone%20Childish%20Gambino",
-    "artUrl": null,
-    "addedAt": 1757913600000,
-    "sample": true
+    "id": "trk-mu4jxpwj04549",
+    "title": "Does It Matter (Ajna (BE) Remix)",
+    "artist": "Samm (BE)",
+    "url": "https://music.apple.com/us/album/does-it-matter-ajna-be-remix/1686617427?i=1686617428&uo=4",
+    "note": "",
+    "artUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9c/3a/98/9c3a983e-7d5d-95e9-0c3a-d55bc1f882b2/cover.jpg/600x600bb.jpg",
+    "addedAt": 1789590430819,
+    "sample": false
   },
   {
-    "id": "s3",
-    "title": "Two Weeks",
-    "artist": "FKA twigs",
-    "note": "Production is so weird and patient, I hear something new every listen.",
-    "url": "https://music.apple.com/us/search?term=Two%20Weeks%20FKA%20twigs",
-    "artUrl": null,
-    "addedAt": 1757827200000,
-    "sample": true
+    "id": "trk-mu4jy4i9q1onh",
+    "title": "Get Away",
+    "artist": "Kungs & Boys Noize",
+    "url": "https://music.apple.com/us/album/get-away/1860642278?i=1860642293&uo=4",
+    "note": "",
+    "artUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/39/f0/01/39f00184-4d44-c5bb-5eeb-41c91e7617c2/25UM1IM85528.rgb.jpg/600x600bb.jpg",
+    "addedAt": 1789590449745,
+    "sample": false
   },
   {
-    "id": "s4",
-    "title": "505",
-    "artist": "Arctic Monkeys",
-    "note": "The slow build into that last chorus never misses.",
-    "url": "https://music.apple.com/us/search?term=505%20Arctic%20Monkeys",
-    "artUrl": null,
-    "addedAt": 1757740800000,
-    "sample": true
+    "id": "trk-mu4jyg579nrtc",
+    "title": "Feelin’",
+    "artist": "Ivory (IT)",
+    "url": "https://music.apple.com/us/album/feelin/1648793674?i=1648793678&uo=4",
+    "note": "",
+    "artUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5f/14/a0/5f14a020-4b88-bf27-7359-a17ab8e68805/810458018515.png/600x600bb.jpg",
+    "addedAt": 1789590464827,
+    "sample": false
+  },
+  {
+    "id": "trk-mu4jzf84zjhj0",
+    "title": "Shadows",
+    "artist": "&ME",
+    "url": "https://music.apple.com/us/album/shadows/1349287416?i=1349288921&uo=4",
+    "note": "",
+    "artUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b2/69/0c/b2690cf6-3953-0f55-7696-f2d6a82e3ae4/5060449913694.png/600x600bb.jpg",
+    "addedAt": 1789590510292,
+    "sample": false
+  },
+  {
+    "id": "trk-mu4jzukpeby6k",
+    "title": "So What",
+    "artist": "unfazed",
+    "url": "https://music.apple.com/us/album/so-what/6779434200?i=6779434201&uo=4",
+    "note": "",
+    "artUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/57/ef/6c/57ef6c18-d7e7-7981-c2f9-ac6b242c520f/26SYMIM31790.rgb.jpg/600x600bb.jpg",
+    "addedAt": 1789590530185,
+    "sample": false
+  },
+  {
+    "id": "trk-mu4k0o2u8d0vo",
+    "title": "Silver Lines (feat. Emily Warren)",
+    "artist": "ANOTR",
+    "url": "https://music.apple.com/us/album/silver-lines-feat-emily-warren/6785556332?i=6785556337&uo=4",
+    "note": "",
+    "artUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f0/0e/70/f00e7083-6f34-3353-9a4b-fadfffcb2732/12881.jpg/600x600bb.jpg",
+    "addedAt": 1789590568422,
+    "sample": false
   }
 ]
