@@ -16,7 +16,7 @@ Then open `http://localhost:5500`. Editing controls (search, add, edit, delete) 
 
 Click **+ Add a track**, search (hits Apple's public iTunes Search API — real title, artist, art, and Apple Music link, no API key needed), pick a match, add a one-line note. If a song isn't in Apple's catalog, use "enter it manually."
 
-**Saving:** in Chrome/Edge, click **Connect songs.json** once (pick the `songs.json` file in this folder) and every edit after that saves straight to disk. In Safari/Firefox (no File System Access API), each save downloads an updated `songs.json` — replace the file in this folder manually.
+**Saving:** in Chrome/Edge, the first save shows a native file picker — pick the `songs.json` file in this folder once, and every edit after that (that session) saves straight to disk. In Safari/Firefox (no File System Access API), each save downloads an updated `songs.json` — replace the file in this folder manually.
 
 ## Publishing changes
 

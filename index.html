@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heavy Rotation</title>
+<title>quinn.fm</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700;800&display=swap">
@@ -14,40 +14,31 @@
 <div class="wrap">
   <header class="site-head">
     <div>
-      <h1 class="serif">Heavy Rotation</h1>
-      <p>The songs I can't stop replaying on Apple Music right now &mdash; updated whenever something new takes over.</p>
+      <h1 class="serif">quinn.fm</h1>
     </div>
     <div class="head-meta">
-      <span class="updated" id="updated-label">&nbsp;</span>
-      <span class="conn-status" id="conn-status" hidden><span class="conn-dot"></span><span id="conn-text">Not connected</span></span>
-      <button class="btn btn-ghost btn-sm" id="connect-btn" hidden>Connect songs.json</button>
       <button class="btn btn-accent" id="add-btn" hidden>+ Add a track</button>
     </div>
   </header>
 
-  <div class="banner" id="sample-banner" hidden>
-    <span><strong>Sample rotation.</strong> These are placeholders &mdash; swap them for what you're actually into.</span>
-    <button class="btn btn-ghost" id="clear-samples-btn">Clear samples</button>
-  </div>
+  <section class="carousel" id="carousel" hidden>
+    <button class="nav-btn" id="prev-btn" aria-label="Previous track">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
 
-  <section id="feature-slot"></section>
+    <div id="carousel-slot"></div>
 
-  <section>
-    <div class="section-head">
-      <h3>Full rotation</h3>
-      <span class="count" id="track-count"></span>
-    </div>
-    <ul class="tracklist" id="tracklist"></ul>
-    <div class="empty" id="empty-state" hidden>
-      <h2 class="serif">Nothing spinning yet</h2>
-      <p>Add the first track to start your rotation.</p>
-    </div>
+    <button class="nav-btn" id="next-btn" aria-label="Next track">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg>
+    </button>
   </section>
 
-  <footer>
-    <span>Built for one listener's taste, not an algorithm's.</span>
-    <span id="owner-hint" hidden>Editing only works when you run this locally &mdash; visitors just browse.</span>
-  </footer>
+  <div class="carousel-dots" id="carousel-dots"></div>
+
+  <div class="empty" id="empty-state" hidden>
+    <h2 class="serif">Nothing spinning yet</h2>
+    <p>Add the first track to start your rotation.</p>
+  </div>
 </div>
 
 <dialog id="track-dialog">

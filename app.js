@@ -13,20 +13,16 @@
   var searchSeq = 0;
   var activeResultIndex = -1;
   var lastResults = [];
+  var currentIndex = 0;
 
   var els = {
-    featureSlot: document.getElementById('feature-slot'),
-    tracklist: document.getElementById('tracklist'),
+    carousel: document.getElementById('carousel'),
+    carouselSlot: document.getElementById('carousel-slot'),
+    carouselDots: document.getElementById('carousel-dots'),
+    prevBtn: document.getElementById('prev-btn'),
+    nextBtn: document.getElementById('next-btn'),
     emptyState: document.getElementById('empty-state'),
-    trackCount: document.getElementById('track-count'),
-    updatedLabel: document.getElementById('updated-label'),
     addBtn: document.getElementById('add-btn'),
-    connectBtn: document.getElementById('connect-btn'),
-    connStatus: document.getElementById('conn-status'),
-    connText: document.getElementById('conn-text'),
-    ownerHint: document.getElementById('owner-hint'),
-    banner: document.getElementById('sample-banner'),
-    clearSamplesBtn: document.getElementById('clear-samples-btn'),
     dialog: document.getElementById('track-dialog'),
     dialogTitle: document.getElementById('dialog-title'),
     dialogSub: document.getElementById('dialog-sub'),
@@ -102,143 +98,96 @@
     return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>';
   }
 
-  // ---------- vinyl ----------
-  function vinylMarkup(song, size) {
-    var stageId = size === 'large' ? ' id="feature-vinyl"' : '';
-    var stageClass = size === 'large' ? 'vinyl-stage' : 'vinyl-stage mini';
-    var labelContent = (song.artUrl || size !== 'large') ? '' : '<span>' + escapeHtml(song.title) + '</span>';
+  // ---------- cover / vinyl reveal ----------
+  function coverMarkup(song) {
+    var artStyle = labelStyle(song);
     return (
-      '<div class="' + stageClass + '"' + stageId + '>' +
-      '<div class="vinyl-disc">' +
-      '<div class="vinyl-label" style="' + labelStyle(song) + '">' + labelContent + '</div>' +
-      '<div class="vinyl-spindle"></div>' +
-      '</div>' +
+      '<div class="cover-stage" tabindex="0" role="button" aria-label="Reveal vinyl">' +
+      '<div class="disc"><div class="disc-label" style="' + artStyle + '"></div><div class="disc-spindle"></div></div>' +
+      '<div class="sleeve" style="' + artStyle + '"></div>' +
       '</div>'
     );
   }
 
-  var featureVinylCancel = null;
-
-  function initFeatureVinyl(stage) {
-    if (featureVinylCancel) { featureVinylCancel(); featureVinylCancel = null; }
-    var disc = stage.querySelector('.vinyl-disc');
-    if (!disc) return;
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var ambient = reduceMotion ? 0 : 0.12;
-    var spin = 0, tilt = 14, vel = ambient, dragging = false, lastX = 0, lastY = 0, raf = null, stopped = false;
-
-    function apply() {
-      disc.style.transform = 'rotateX(' + tilt.toFixed(2) + 'deg) rotateZ(' + spin.toFixed(2) + 'deg)';
-    }
-    function loop() {
-      if (stopped) return;
-      if (!dragging) {
-        vel += (ambient - vel) * 0.06;
-        spin += vel;
-        tilt += (14 - tilt) * 0.16;
-      }
-      apply();
-      raf = requestAnimationFrame(loop);
-    }
-    function down(e) {
-      dragging = true;
-      vel = 0;
-      lastX = e.clientX; lastY = e.clientY;
-      try { stage.setPointerCapture(e.pointerId); } catch (err) {}
-    }
-    function move(e) {
-      if (!dragging) return;
-      var dx = e.clientX - lastX;
-      var dy = e.clientY - lastY;
-      lastX = e.clientX; lastY = e.clientY;
-      spin += dx * 1.35;
-      vel = dx * 1.35;
-      tilt = Math.max(-14, Math.min(52, tilt - dy * 0.7));
-    }
-    function up() { dragging = false; }
-
-    stage.addEventListener('pointerdown', down);
-    stage.addEventListener('pointermove', move);
-    stage.addEventListener('pointerup', up);
-    stage.addEventListener('pointercancel', up);
-    loop();
-    featureVinylCancel = function () { stopped = true; if (raf) cancelAnimationFrame(raf); };
-  }
+  document.addEventListener('click', function (e) {
+    var stage = e.target.closest('.cover-stage');
+    if (stage) stage.classList.toggle('revealed');
+  });
 
   // ---------- render ----------
   function render() {
     var list = sortedSongs();
-    els.trackCount.textContent = list.length ? (list.length + (list.length === 1 ? ' track' : ' tracks')) : '';
-    els.banner.hidden = !list.some(function (s) { return s.sample; });
 
     if (!list.length) {
-      if (featureVinylCancel) { featureVinylCancel(); featureVinylCancel = null; }
-      els.featureSlot.innerHTML = '';
-      els.tracklist.innerHTML = '';
+      els.carousel.hidden = true;
+      els.carouselDots.innerHTML = '';
       els.emptyState.hidden = false;
       return;
     }
     els.emptyState.hidden = true;
+    els.carousel.hidden = false;
 
-    var feature = list[0];
-    var rest = list.slice(1);
+    if (currentIndex >= list.length) currentIndex = list.length - 1;
+    if (currentIndex < 0) currentIndex = 0;
+    var song = list[currentIndex];
 
-    els.featureSlot.innerHTML =
-      '<div class="feature">' +
-      vinylMarkup(feature, 'large') +
-      '<div class="feature-body">' +
-      '<span class="eyebrow">On repeat now</span>' +
-      '<h2 class="serif">' + escapeHtml(feature.title) + (feature.sample ? '<span class="badge-sample">Sample</span>' : '') + '</h2>' +
-      '<div class="artist">' + escapeHtml(feature.artist) + '</div>' +
-      (feature.note ? '<p class="note">' + escapeHtml(feature.note) + '</p>' : '') +
-      '<div class="feature-foot">' +
-      '<a class="btn btn-accent" href="' + escapeHtml(feature.url) + '" target="_blank" rel="noopener">Listen on Apple Music</a>' +
-      '<span class="added">Added ' + fmtDate(feature.addedAt) + '</span>' +
+    els.carouselSlot.innerHTML =
+      '<div class="showcase">' +
+      coverMarkup(song) +
+      '<div class="showcase-body">' +
+      '<div class="showcase-top">' +
+      '<span class="eyebrow">' + (currentIndex === 0 ? 'On repeat now' : '&nbsp;') + '</span>' +
+      (isEditMode ? '<div class="showcase-icons">' +
+        '<button class="icon-link edit-btn" title="Edit" data-id="' + escapeHtml(song.id) + '">' + editIcon() + '</button>' +
+        '<button class="icon-link delete-btn" title="Remove" data-id="' + escapeHtml(song.id) + '">' + trashIcon() + '</button>' +
+        '</div>' : '') +
+      '</div>' +
+      '<h2 class="serif">' + escapeHtml(song.title) + (song.sample ? '<span class="badge-sample">Sample</span>' : '') + '</h2>' +
+      '<div class="artist">' + escapeHtml(song.artist) + '</div>' +
+      (song.note ? '<p class="note">' + escapeHtml(song.note) + '</p>' : '') +
+      '<div class="showcase-foot">' +
+      '<a class="btn btn-accent" href="' + escapeHtml(song.url) + '" target="_blank" rel="noopener">Listen on Apple Music</a>' +
+      '<span class="added">Added ' + fmtDate(song.addedAt) + '</span>' +
       '</div>' +
       '</div>' +
       '</div>';
 
-    els.tracklist.innerHTML = rest.map(function (song, idx) {
-      return (
-        '<li class="track" data-id="' + escapeHtml(song.id) + '">' +
-        '<span class="num">' + (idx + 2) + '</span>' +
-        vinylMarkup(song, 'mini') +
-        '<div class="track-main">' +
-        '<div class="t-title">' + escapeHtml(song.title) + (song.sample ? '<span class="badge-sample">Sample</span>' : '') + '</div>' +
-        '<div class="t-artist">' + escapeHtml(song.artist) + '</div>' +
-        (song.note ? '<div class="t-note">' + escapeHtml(song.note) + '</div>' : '') +
-        '</div>' +
-        '<div class="track-actions">' +
-        (isEditMode ? '<button class="icon-link edit-btn" title="Edit" data-id="' + escapeHtml(song.id) + '">' + editIcon() + '</button>' : '') +
-        (isEditMode ? '<button class="icon-link delete-btn" title="Remove" data-id="' + escapeHtml(song.id) + '">' + trashIcon() + '</button>' : '') +
-        '<a class="icon-link" title="Open in Apple Music" href="' + escapeHtml(song.url) + '" target="_blank" rel="noopener">' + listenIcon() + '</a>' +
-        '</div>' +
-        '</li>'
-      );
+    els.carouselDots.innerHTML = list.map(function (s, i) {
+      return '<button class="dot' + (i === currentIndex ? ' active' : '') + '" data-idx="' + i + '" aria-label="Go to track ' + (i + 1) + '"></button>';
     }).join('');
 
-    var newest = list.reduce(function (max, s) { return s.addedAt > max ? s.addedAt : max; }, 0);
-    els.updatedLabel.textContent = 'Updated ' + fmtDate(newest);
-
-    var featureStage = document.getElementById('feature-vinyl');
-    if (featureStage) initFeatureVinyl(featureStage);
   }
+
+  function goTo(index) {
+    var list = sortedSongs();
+    if (!list.length) return;
+    currentIndex = ((index % list.length) + list.length) % list.length;
+    render();
+  }
+
+  els.prevBtn.addEventListener('click', function () { goTo(currentIndex - 1); });
+  els.nextBtn.addEventListener('click', function () { goTo(currentIndex + 1); });
+  els.carouselDots.addEventListener('click', function (e) {
+    var dot = e.target.closest('.dot');
+    if (dot) goTo(parseInt(dot.dataset.idx, 10));
+  });
+  els.carouselSlot.addEventListener('click', function (e) {
+    var editBtn = e.target.closest('.edit-btn');
+    var delBtn = e.target.closest('.delete-btn');
+    if (editBtn) {
+      var song = songs.find(function (s) { return s.id === editBtn.dataset.id; });
+      if (song) openDialog(song);
+    } else if (delBtn) {
+      persist(songs.filter(function (s) { return s.id !== delBtn.dataset.id; }), 'Track removed.');
+    }
+  });
 
   function applyEditVisibility() {
     els.addBtn.hidden = !isEditMode;
-    els.ownerHint.hidden = !isEditMode;
-    els.connectBtn.hidden = !(isEditMode && !!window.showSaveFilePicker);
     render();
   }
 
   // ---------- persistence ----------
-  function updateConnStatus(connected) {
-    els.connStatus.hidden = !isEditMode || !window.showSaveFilePicker;
-    els.connStatus.classList.toggle('on', connected);
-    els.connText.textContent = connected ? 'Connected to songs.json' : 'Not connected';
-    els.connectBtn.hidden = !isEditMode || !window.showSaveFilePicker || connected;
-  }
-
   function downloadJson(data) {
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     var url = URL.createObjectURL(blob);
@@ -254,20 +203,19 @@
     await writable.close();
   }
 
-  els.connectBtn.addEventListener('click', async function () {
-    if (!window.showSaveFilePicker) return;
+  async function ensureFileHandle() {
+    if (fileHandle) return fileHandle;
+    if (!window.showSaveFilePicker) return null;
     try {
-      var handle = await window.showSaveFilePicker({
+      fileHandle = await window.showSaveFilePicker({
         suggestedName: 'songs.json',
         types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
       });
-      fileHandle = handle;
-      updateConnStatus(true);
-      showToast('Connected — edits now save straight to songs.json.');
+      return fileHandle;
     } catch (err) {
-      // user cancelled the picker
+      return null; // picker dismissed
     }
-  });
+  }
 
   async function persist(newSongs, successMsg) {
     var previous = songs;
@@ -275,20 +223,21 @@
     render();
     if (!isEditMode) return;
 
-    if (fileHandle) {
+    var handle = await ensureFileHandle();
+    if (handle) {
       try {
-        await writeToHandle(fileHandle, newSongs);
+        await writeToHandle(handle, newSongs);
         showToast(successMsg || 'Saved.');
         return;
       } catch (err) {
-        showToast("Couldn't write to the connected file — downloaded instead.");
+        showToast("Couldn't write to the file — downloaded instead.");
         downloadJson(newSongs);
         return;
       }
     }
 
     downloadJson(newSongs);
-    showToast((successMsg || 'Saved') + ' — songs.json downloaded. Replace the file in your project (or click Connect) and redeploy.');
+    showToast((successMsg || 'Saved') + ' — songs.json downloaded. Replace the file in your project and redeploy.');
   }
 
   // ---------- dialog: search ----------
@@ -463,21 +412,6 @@
 
   els.dialogCancel.addEventListener('click', function () { els.dialog.close(); });
 
-  els.clearSamplesBtn.addEventListener('click', function () {
-    persist(songs.filter(function (s) { return !s.sample; }), 'Samples cleared.');
-  });
-
-  els.tracklist.addEventListener('click', function (e) {
-    var editBtn = e.target.closest('.edit-btn');
-    var delBtn = e.target.closest('.delete-btn');
-    if (editBtn) {
-      var song = songs.find(function (s) { return s.id === editBtn.dataset.id; });
-      if (song) openDialog(song);
-    } else if (delBtn) {
-      persist(songs.filter(function (s) { return s.id !== delBtn.dataset.id; }), 'Track removed.');
-    }
-  });
-
   els.form.addEventListener('submit', function (e) {
     e.preventDefault();
     var usingManual = !els.manualFields.hidden;
@@ -512,6 +446,7 @@
       }]);
     }
     els.dialog.close();
+    if (!editingId) currentIndex = 0;
     persist(next, editingId ? 'Track updated.' : 'Added to the rotation.');
   });
 
@@ -519,7 +454,6 @@
 
   // ---------- boot ----------
   applyEditVisibility();
-  updateConnStatus(false);
 
   fetch('songs.json').then(function (res) {
     if (!res.ok) throw new Error('fetch failed');
