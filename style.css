@@ -1,16 +1,16 @@
 :root{
-  --ink-900:#122019;
-  --ink-800:#1c2f26;
-  --ink-600:#3c5346;
-  --paper:#f1ede1;
-  --paper-dim:#e4ddc9;
+  --ink-900:#0f1f2b;
+  --ink-800:#183141;
+  --ink-600:#3d5666;
+  --paper:#e9eef1;
+  --paper-dim:#d7e1e6;
   --surface:#ffffff;
   --accent:#ff4d70;
   --accent-dim:#ffe1e8;
   --gold:#e69a2b;
-  --line: rgba(18,32,25,0.14);
-  --shadow: 0 24px 48px -28px rgba(18,32,25,0.4);
-  --shadow-sm: 0 10px 20px -14px rgba(18,32,25,0.35);
+  --line: rgba(15,31,43,0.14);
+  --shadow: 0 24px 48px -28px rgba(15,31,43,0.4);
+  --shadow-sm: 0 10px 20px -14px rgba(15,31,43,0.35);
 
   --bg: var(--paper);
   --text: var(--ink-900);
@@ -22,23 +22,23 @@
 
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0c1712;
-    --text:#efe9d8;
-    --text-dim:#9db3a4;
-    --border: rgba(239,233,216,0.14);
-    --card:#16241c;
-    --card-dim:#1c2c22;
+    --bg:#0a151d;
+    --text:#e7edf0;
+    --text-dim:#8ea3b3;
+    --border: rgba(231,237,240,0.14);
+    --card:#101f2a;
+    --card-dim:#162a37;
     --accent-dim:#3a1622;
     --gold:#f0ac3f;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0c1712;
-  --text:#efe9d8;
-  --text-dim:#9db3a4;
-  --border: rgba(239,233,216,0.14);
-  --card:#16241c;
-  --card-dim:#1c2c22;
+  --bg:#0a151d;
+  --text:#e7edf0;
+  --text-dim:#8ea3b3;
+  --border: rgba(231,237,240,0.14);
+  --card:#101f2a;
+  --card-dim:#162a37;
   --accent-dim:#3a1622;
   --gold:#f0ac3f;
 }
@@ -205,6 +205,10 @@ button{ font-family:inherit; cursor:pointer; }
   padding:28px;
   box-shadow:var(--shadow);
 }
+.showcase.enter-next{ animation:slideInNext .38s cubic-bezier(.22,.85,.32,1); }
+.showcase.enter-prev{ animation:slideInPrev .38s cubic-bezier(.22,.85,.32,1); }
+@keyframes slideInNext{ from{ transform:translateX(32px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+@keyframes slideInPrev{ from{ transform:translateX(-32px); opacity:0; } to{ transform:translateX(0); opacity:1; } }
 .showcase-body{
   display:flex;
   flex-direction:column;
@@ -331,7 +335,7 @@ dialog{
   width:min(500px, 92vw);
   box-shadow:var(--shadow);
 }
-dialog::backdrop{ background:rgba(12,23,18,0.55); }
+dialog::backdrop{ background:rgba(10,21,29,0.55); }
 .dialog-inner{ padding:26px; }
 .dialog-inner h2{
   font-family:'Instrument Serif', serif;
@@ -473,5 +477,5 @@ dialog::backdrop{ background:rgba(12,23,18,0.55); }
 }
 
 @media (prefers-reduced-motion:reduce){
-  *{ transition:none !important; }
+  *{ transition:none !important; animation:none !important; }
 }

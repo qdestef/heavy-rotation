@@ -115,7 +115,7 @@
   });
 
   // ---------- render ----------
-  function render() {
+  function render(dir) {
     var list = sortedSongs();
 
     if (!list.length) {
@@ -132,7 +132,7 @@
     var song = list[currentIndex];
 
     els.carouselSlot.innerHTML =
-      '<div class="showcase">' +
+      '<div class="showcase' + (dir ? ' enter-' + dir : '') + '">' +
       coverMarkup(song) +
       '<div class="showcase-body">' +
       '<div class="showcase-top">' +
@@ -158,19 +158,42 @@
 
   }
 
-  function goTo(index) {
+  function goTo(index, dir) {
     var list = sortedSongs();
     if (!list.length) return;
     currentIndex = ((index % list.length) + list.length) % list.length;
-    render();
+    render(dir);
   }
 
-  els.prevBtn.addEventListener('click', function () { goTo(currentIndex - 1); });
-  els.nextBtn.addEventListener('click', function () { goTo(currentIndex + 1); });
+  els.prevBtn.addEventListener('click', function () { goTo(currentIndex - 1, 'prev'); });
+  els.nextBtn.addEventListener('click', function () { goTo(currentIndex + 1, 'next'); });
   els.carouselDots.addEventListener('click', function (e) {
     var dot = e.target.closest('.dot');
-    if (dot) goTo(parseInt(dot.dataset.idx, 10));
+    if (!dot) return;
+    var idx = parseInt(dot.dataset.idx, 10);
+    goTo(idx, idx > currentIndex ? 'next' : idx < currentIndex ? 'prev' : null);
   });
+
+  // ---------- swipe (touch) ----------
+  (function initSwipe() {
+    var startX = 0, startY = 0, tracking = false;
+    els.carousel.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      tracking = true;
+    }, { passive: true });
+    els.carousel.addEventListener('touchend', function (e) {
+      if (!tracking) return;
+      tracking = false;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        if (dx < 0) goTo(currentIndex + 1, 'next');
+        else goTo(currentIndex - 1, 'prev');
+      }
+    }, { passive: true });
+  })();
   els.carouselSlot.addEventListener('click', function (e) {
     var editBtn = e.target.closest('.edit-btn');
     var delBtn = e.target.closest('.delete-btn');
