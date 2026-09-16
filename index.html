@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heavy Rotation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-head">
+    <div>
+      <h1 class="serif">Heavy Rotation</h1>
+      <p>The songs I can't stop replaying on Apple Music right now &mdash; updated whenever something new takes over.</p>
+    </div>
+    <div class="head-meta">
+      <span class="updated" id="updated-label">&nbsp;</span>
+      <span class="conn-status" id="conn-status" hidden><span class="conn-dot"></span><span id="conn-text">Not connected</span></span>
+      <button class="btn btn-ghost btn-sm" id="connect-btn" hidden>Connect songs.json</button>
+      <button class="btn btn-accent" id="add-btn" hidden>+ Add a track</button>
+    </div>
+  </header>
+
+  <div class="banner" id="sample-banner" hidden>
+    <span><strong>Sample rotation.</strong> These are placeholders &mdash; swap them for what you're actually into.</span>
+    <button class="btn btn-ghost" id="clear-samples-btn">Clear samples</button>
+  </div>
+
+  <section id="feature-slot"></section>
+
+  <section>
+    <div class="section-head">
+      <h3>Full rotation</h3>
+      <span class="count" id="track-count"></span>
+    </div>
+    <ul class="tracklist" id="tracklist"></ul>
+    <div class="empty" id="empty-state" hidden>
+      <h2 class="serif">Nothing spinning yet</h2>
+      <p>Add the first track to start your rotation.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Built for one listener's taste, not an algorithm's.</span>
+    <span id="owner-hint" hidden>Editing only works when you run this locally &mdash; visitors just browse.</span>
+  </footer>
+</div>
+
+<dialog id="track-dialog">
+  <form class="dialog-inner" id="track-form" method="dialog">
+    <h2 class="serif" id="dialog-title">Add a track</h2>
+    <div class="dialog-sub" id="dialog-sub">Search Apple Music's catalog and pick a match.</div>
+
+    <div id="search-step">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search a song or artist&hellip;" autocomplete="off">
+      </div>
+      <div class="search-status" id="search-status"></div>
+      <div class="search-results" id="search-results"></div>
+      <button type="button" class="manual-toggle" id="manual-toggle-on">Can't find it &mdash; enter it manually</button>
+    </div>
+
+    <div id="picked-step" hidden>
+      <div class="picked-card">
+        <div class="picked-art" id="picked-art"></div>
+        <div class="picked-info">
+          <div class="p-title" id="picked-title"></div>
+          <div class="p-artist" id="picked-artist"></div>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" id="picked-change">Change</button>
+      </div>
+    </div>
+
+    <input type="hidden" id="f-id">
+    <input type="hidden" id="f-url">
+    <input type="hidden" id="f-art-url">
+
+    <div id="manual-fields" class="manual-fields" hidden>
+      <div class="field">
+        <label for="f-title">Song title</label>
+        <input type="text" id="f-title" maxlength="120" placeholder="e.g. Nightcall">
+      </div>
+      <div class="field">
+        <label for="f-artist">Artist</label>
+        <input type="text" id="f-artist" maxlength="120" placeholder="e.g. Kavinsky">
+      </div>
+      <div class="field">
+        <label for="f-manual-url">Apple Music link</label>
+        <input type="url" id="f-manual-url" placeholder="https://music.apple.com/...">
+      </div>
+    </div>
+
+    <div class="field" id="note-field" hidden>
+      <label for="f-note">Why it's on repeat</label>
+      <textarea id="f-note" rows="2" maxlength="220" placeholder="One line on what's got you hooked"></textarea>
+    </div>
+
+    <div class="dialog-actions" id="dialog-actions" hidden>
+      <button type="button" class="btn btn-ghost" id="dialog-cancel">Cancel</button>
+      <div class="right">
+        <button type="submit" class="btn btn-accent" id="dialog-submit">Save track</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

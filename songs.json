@@ -1,0 +1,42 @@
+[
+  {
+    "id": "s1",
+    "title": "Nightcall",
+    "artist": "Kavinsky",
+    "note": "That vocoder hook is the whole reason synthwave still works on me.",
+    "url": "https://music.apple.com/us/search?term=Nightcall%20Kavinsky",
+    "artUrl": null,
+    "addedAt": 1758000000000,
+    "sample": true
+  },
+  {
+    "id": "s2",
+    "title": "Redbone",
+    "artist": "Childish Gambino",
+    "note": "The bassline sneaks up on you and then you're stuck for the day.",
+    "url": "https://music.apple.com/us/search?term=Redbone%20Childish%20Gambino",
+    "artUrl": null,
+    "addedAt": 1757913600000,
+    "sample": true
+  },
+  {
+    "id": "s3",
+    "title": "Two Weeks",
+    "artist": "FKA twigs",
+    "note": "Production is so weird and patient, I hear something new every listen.",
+    "url": "https://music.apple.com/us/search?term=Two%20Weeks%20FKA%20twigs",
+    "artUrl": null,
+    "addedAt": 1757827200000,
+    "sample": true
+  },
+  {
+    "id": "s4",
+    "title": "505",
+    "artist": "Arctic Monkeys",
+    "note": "The slow build into that last chorus never misses.",
+    "url": "https://music.apple.com/us/search?term=505%20Arctic%20Monkeys",
+    "artUrl": null,
+    "addedAt": 1757740800000,
+    "sample": true
+  }
+]
